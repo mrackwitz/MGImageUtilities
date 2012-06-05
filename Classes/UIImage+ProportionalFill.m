@@ -91,9 +91,9 @@
 	UIImage *image = nil;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 4.0) {
-		UIGraphicsBeginImageContextWithOptions(destRect.size, NO, 0.0); // 0.0 for scale means "correct scale for device's main screen".
+		UIGraphicsBeginImageContextWithOptions(destRect.size, NO, (MGImageUtilities_USE_IMAGE_SCALE_FACTOR ? imageScaleFactor : 0.0)); // 0.0 for scale means "correct scale for device's main screen".
 		CGImageRef sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect); // cropping happens here.
-		image = [UIImage imageWithCGImage:sourceImg scale:0.0 orientation:self.imageOrientation]; // create cropped UIImage.
+		image = [UIImage imageWithCGImage:sourceImg scale:(MGImageUtilities_USE_IMAGE_SCALE_FACTOR ? imageScaleFactor : 0.0) orientation:self.imageOrientation]; // create cropped UIImage.
 		[image drawInRect:destRect]; // the actual scaling happens here, and orientation is taken care of automatically.
 		CGImageRelease(sourceImg);
 		image = UIGraphicsGetImageFromCurrentImageContext();
